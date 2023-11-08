@@ -1,6 +1,8 @@
-import { api } from './api';
-import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '@/store/configureStore';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: 'https://api.henrikdev.xyz/',
+});
 
 export interface ILeaderboard {
   PlayerCardID: string;
@@ -254,7 +256,10 @@ export interface Team {
   rounds_lost: number;
 }
 
-export const leaderboardsApi = api.injectEndpoints({
+export const leaderboardsApi = createApi({
+  reducerPath: 'leaderboardsApi',
+  baseQuery,
+  tagTypes: ['leaderboards'],
   endpoints: (builder) => ({
     getLeaderboards: builder.query<ILeaderboard[], { region: string; start?: number }>({
       query: ({ region, start = 0 }) => ({ url: `/valorant/v1/leaderboard/${region}`, params: { start } }),
@@ -282,13 +287,6 @@ export const leaderboardsApi = api.injectEndpoints({
         }),
     }),
   }),
-  overrideExisting: true,
 });
 
 export const { useGetLeaderboardsQuery, useGetLeaderByTagAndNameQuery } = leaderboardsApi;
-
-export const selectLeaderboardById = ({ region, puuid }: { region: string; puuid: string }) =>
-  createSelector(
-    (state: RootState) => leaderboardsApi.endpoints.getLeaderboards.select({ region })(state),
-    (result) => result.data?.find((item) => item.puuid === puuid),
-  );

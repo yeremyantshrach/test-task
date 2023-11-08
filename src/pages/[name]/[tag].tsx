@@ -3,7 +3,7 @@ import { Grid, LoadingOverlay } from '@mantine/core';
 
 import { useAppSelector } from '@/store/hooks';
 import { selectAppRegion } from '@/store/appSlice';
-import { useGetLeaderByTagAndNameQuery } from '@/store/services/leaderboards';
+import { useGetLeaderByTagAndNameQuery } from '@/store/services/leaderboardsApi';
 import PlayerCard from '@/components/PlayerCard';
 
 export default function LeaderDetails() {

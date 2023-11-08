@@ -3,7 +3,7 @@ import { ListChildComponentProps } from 'react-window';
 import { Anchor } from '@mantine/core';
 import Link from 'next/link';
 
-import { ILeaderboard } from '@/store/services/leaderboards';
+import { ILeaderboard } from '@/store/services/leaderboardsApi';
 
 const LeaderboardItem: FC<ListChildComponentProps<ILeaderboard[]>> = ({ data, style, index }) => {
   return (

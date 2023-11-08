@@ -1,16 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
 import { FixedSizeList as List, ListOnScrollProps } from 'react-window';
 
-import LeaderboardItem from '@/components/LeaderboardItem';
+import PostItem from '@/components/PostItem';
 
-import { ILeaderboard, useGetLeaderboardsQuery } from '@/store/services/leaderboardsApi';
-import { useAppSelector } from '@/store/hooks';
-import { selectAppRegion } from '@/store/appSlice';
+import { IPost, useGetPostsQuery } from '@/store/services/postsApi';
 
 export default function Home() {
-  const [start, setStart] = useState<number>(1000);
-  const region = useAppSelector(selectAppRegion);
-  const { data, isSuccess, isFetching } = useGetLeaderboardsQuery({ region, start });
+  const [page, setPage] = useState<number>(1);
+  const { data, isSuccess, isFetching } = useGetPostsQuery({ page });
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const handleScroll = useCallback(
@@ -21,7 +18,7 @@ export default function Home() {
         listRef.current &&
         listRef.current.scrollHeight - listRef.current.clientHeight - scrollOffset < 200
       ) {
-        setStart((prevState) => prevState + 1000);
+        setPage((prevState) => prevState + 1);
       }
     },
     [isFetching],
@@ -29,17 +26,16 @@ export default function Home() {
   return (
     <>
       {isSuccess && (
-        <List<ILeaderboard[]>
-          style={{ left: 20, right: 20 }}
+        <List<IPost[]>
           height={window.innerHeight - 80}
           itemCount={data.length}
-          itemSize={40}
+          itemSize={400}
           itemData={data}
           width="100%"
           onScroll={handleScroll}
           outerRef={listRef}
         >
-          {LeaderboardItem}
+          {PostItem}
         </List>
       )}
       {isFetching && <p>Loading...</p>}

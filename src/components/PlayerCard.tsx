@@ -1,6 +1,6 @@
 import { FC, Fragment, memo, useMemo } from 'react';
 import { Button, Card, Group, Image, Text } from '@mantine/core';
-import { Teams, IData } from '@/store/services/leaderboards';
+import { Teams, IData } from '@/store/services/leaderboardsApi';
 
 type PlayerCardProps = {
   player: IData;

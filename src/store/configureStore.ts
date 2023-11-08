@@ -1,18 +1,21 @@
 import { combineReducers, configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 
-import { api } from '@/store/services/api';
+import { leaderboardsApi } from '@/store/services/leaderboardsApi';
+import { postsApi } from '@/store/services/postsApi';
 import { appSlice } from '@/store/appSlice';
 
 const rootReducer = combineReducers({
-  [api.reducerPath]: api.reducer,
+  [leaderboardsApi.reducerPath]: leaderboardsApi.reducer,
+  [postsApi.reducerPath]: postsApi.reducer,
   [appSlice.name]: appSlice.reducer,
 });
 
 const makeStore = () =>
   configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([leaderboardsApi.middleware, postsApi.middleware]),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
